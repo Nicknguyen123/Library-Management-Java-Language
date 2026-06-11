@@ -1,0 +1,5 @@
+REG482|Phan Thanh Tùng|0901234567|thanhtung@gmail.com|0|1
+REG084|Vũ Thị Hồng Nhung|0912345678|hongnhung@gmail.com|0|0
+REG913|Đặng Minh Quân|0923456789|minhquan@gmail.com|0|0
+REG241|Bùi Phương Thảo|0934567890|phuongthao@gmail.com|0|0
+REG508|Đỗ Gia Bảo|0945678901|giabao@gmail.com|0|0
