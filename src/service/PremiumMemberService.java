@@ -1,6 +1,7 @@
 package service;
 
 import model.PremiumMember;
+import storage.PremiumMemberStorage;
 import utils.Validator;
 
 import java.util.ArrayList;
@@ -9,10 +10,12 @@ import java.util.List;
 public class PremiumMemberService {
     private List<PremiumMember> premiumMemberList;
     private MemberService memberService;
+    private PremiumMemberStorage premiumMemberStorage;
 
-    public PremiumMemberService(MemberService memberService) {
+    public PremiumMemberService(MemberService memberService, PremiumMemberStorage premiumMemberStorage) {
         this.premiumMemberList = new ArrayList<>();
         this.memberService = memberService;
+        this.premiumMemberStorage = premiumMemberStorage;
     }
 
     public List<PremiumMember> getPremiumList() {
@@ -37,6 +40,13 @@ public class PremiumMemberService {
         }
 
         premiumMemberList.add(premiumMember);
+        memberService.addMember(premiumMember);
+        premiumMemberStorage.saveOnePremiumMember(premiumMember);
+    }
+
+    public void addPremiumMemberFromFile(PremiumMember premiumMember) {
+        premiumMemberList.add(premiumMember);
+        memberService.addMember(premiumMember);
     }
 
     public void deletePremiumMember(String id) {
@@ -45,6 +55,8 @@ public class PremiumMemberService {
         for (int i = 0; i < premiumMemberList.size(); i++) {
             if (premiumMemberList.get(i).getId().equals(safeId)) {
                 premiumMemberList.remove(i);
+                memberService.deleteMember(safeId);
+                premiumMemberStorage.saveAllPremiumMember(premiumMemberList);
                 return;
             }
         }
@@ -71,6 +83,7 @@ public class PremiumMemberService {
         String safeName = Validator.validateBasicString(newName);
 
         premiumMember.setName(safeName);
+        premiumMemberStorage.saveAllPremiumMember(premiumMemberList);
     }
 
     public void updatePhone(PremiumMember premiumMember, String newPhone) {
@@ -83,6 +96,7 @@ public class PremiumMemberService {
         }
 
         premiumMember.setPhone(newPhone);
+        premiumMemberStorage.saveAllPremiumMember(premiumMemberList);
     }
 
     public void updateEmail(PremiumMember premiumMember, String newEmail) {
@@ -95,6 +109,7 @@ public class PremiumMemberService {
         }
 
         premiumMember.setEmail(safeEmail);
+        premiumMemberStorage.saveAllPremiumMember(premiumMemberList);
     }
 
     public PremiumMember findMemberById(String id) {

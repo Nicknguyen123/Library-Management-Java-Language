@@ -13,15 +13,13 @@ import java.util.function.Consumer;
 
 public class BookMenu {
     private BookService bookService;
-    private BookStorage bookStorage;
     private ConsoleHelper consoleHelper;
     private InputHelper inputHelper;
     public static final int currentYear = Year.now().getValue();
 
-    public BookMenu(BookService bookService, BookStorage bookStorage, ConsoleHelper consoleHelper,
+    public BookMenu(BookService bookService, ConsoleHelper consoleHelper,
                     InputHelper inputHelper) {
         this.bookService = bookService;
-        this.bookStorage = bookStorage;
         this.consoleHelper = consoleHelper;
         this.inputHelper = inputHelper;
     }
@@ -92,7 +90,6 @@ public class BookMenu {
 
                 Book book = new Book(id, title, author, genre, publicationYear, quantity);
                 bookService.addBook(book);
-                bookStorage.saveOneBook(book);
 
                 System.out.println("\n✨ Successfully added Book!");
 
@@ -146,7 +143,6 @@ public class BookMenu {
             yesNo = inputHelper.readYesNo("🔄 Do you want to delete this book (Y/N): ");
             if (yesNo == 'Y') {
                 bookService.deleteBook(id);
-                bookStorage.saveAllBook(bookService.getBookList());
                 System.out.println("🗑️  Book deleted successfully!");
 
                 yesNo = inputHelper.readYesNo("🔄 Do you want to delete another book (Y/N): ");
@@ -347,7 +343,6 @@ public class BookMenu {
 
             if (yesNo == 'Y') {
                 supportUpdate(book);
-                bookStorage.saveAllBook(bookService.getBookList());
                 System.out.printf("✨ All Changes For Book Saved Successfully!\n");
                 yesNo = inputHelper.readYesNo("🔄 Do you want to update another book (Y/N): ");
 
@@ -452,7 +447,7 @@ public class BookMenu {
         newGenre = StringUtils.beautify(newGenre);
         bookService.updateGenre(book, newGenre);
         System.out.printf("🎉 Successfully Updated Book: %s ➔ %s\n", oldGenre, newGenre);
-        consoleHelper.clearScreen();
+        consoleHelper.pause();
     }
 
     private void updateYear(Book book) {

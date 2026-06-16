@@ -19,31 +19,17 @@ import java.util.Date;
 
 public class BorrowingMenu {
     private BorrowingService borrowingService;
-    private BorrowingStorage borrowingStorage;
     private MemberService memberService;
-    private PremiumMemberService premiumMemberService;
-    private RegularMemberService regularMemberService;
-    private PremiumMemberStorage premiumMemberStorage;
-    private RegularMemberStorage regularMemberStorage;
     private BookService bookService;
-    private BookStorage bookStorage;
     private ConsoleHelper consoleHelper;
     private InputHelper inputHelper;
 
-    public BorrowingMenu(BorrowingService borrowingService, BorrowingStorage borrowingStorage,
-                         MemberService memberService, PremiumMemberService premiumMemberService,
-                         RegularMemberService regularMemberService, PremiumMemberStorage premiumMemberStorage,
-                         RegularMemberStorage regularMemberStorage, BookService bookService,
-                         BookStorage bookStorage, ConsoleHelper consoleHelper, InputHelper inputHelper) {
+    public BorrowingMenu(BorrowingService borrowingService, MemberService memberService,
+                         BookService bookService, ConsoleHelper consoleHelper,
+                         InputHelper inputHelper) {
         this.borrowingService = borrowingService;
-        this.borrowingStorage = borrowingStorage;
         this.memberService = memberService;
-        this.premiumMemberService = premiumMemberService;
-        this.regularMemberService = regularMemberService;
-        this.premiumMemberStorage = premiumMemberStorage;
-        this.regularMemberStorage = regularMemberStorage;
         this.bookService = bookService;
-        this.bookStorage = bookStorage;
         this.consoleHelper = consoleHelper;
         this.inputHelper = inputHelper;
     }
@@ -78,8 +64,6 @@ public class BorrowingMenu {
                     viewBorrowingHistory();
                     break;
                 case 0:
-                    System.out.println("✨ Returning to the Console Menu...");
-                    consoleHelper.pause();
                     break;
                 default:
                     System.out.println("❌ Invalid choice! Please enter a number between 0 and 4.");
@@ -115,13 +99,6 @@ public class BorrowingMenu {
 
                 Borrowing borrowing = new Borrowing(id, book, member, borrowDate);
                 borrowingService.borrowBook(borrowing);
-                borrowingStorage.saveOneBorrowing(borrowing);
-                bookStorage.saveAllBook(bookService.getBookList());
-                if (member instanceof PremiumMember) {
-                    premiumMemberStorage.saveAllPremiumMember(premiumMemberService.getPremiumList());
-                } else {
-                    regularMemberStorage.saveAllRegularMember(regularMemberService.getRegularMemberList());
-                }
 
                 System.out.println("\n✨ Successfully added Borrowing!");
                 yesNo = inputHelper.readYesNo("🔄 Do you want to add another Borrowing (Y/N): ");
@@ -210,14 +187,6 @@ public class BorrowingMenu {
             try {
                 LocalDate returnDate = inputHelper.readDate("📅 Enter the return date: ");
                 borrowingService.returnBook(borrowing, returnDate);
-                borrowingStorage.saveAllBorrowing(borrowingService.getBorrowingList());
-                bookStorage.saveAllBook(bookService.getBookList());
-                if (borrowing.getMember() instanceof PremiumMember) {
-                    premiumMemberStorage.saveAllPremiumMember(premiumMemberService.getPremiumList());
-                } else {
-                    regularMemberStorage.saveAllRegularMember(regularMemberService.getRegularMemberList());
-                }
-
                 System.out.println("\n✨ Successfully returned Borrowing!");
                 consoleHelper.pause();
                 break;

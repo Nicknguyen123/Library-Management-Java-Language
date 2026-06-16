@@ -2,6 +2,7 @@ package service;
 
 import model.PremiumMember;
 import model.RegularMember;
+import storage.RegularMemberStorage;
 import utils.Validator;
 
 import java.util.ArrayList;
@@ -10,10 +11,12 @@ import java.util.List;
 public class RegularMemberService {
     private List<RegularMember> regularMemberList;
     private MemberService memberService;
+    private RegularMemberStorage regularMemberStorage;
 
-    public RegularMemberService(MemberService memberService) {
+    public RegularMemberService(MemberService memberService, RegularMemberStorage regularMemberStorage) {
         this.regularMemberList = new ArrayList<>();
         this.memberService = memberService;
+        this.regularMemberStorage = regularMemberStorage;
     }
 
     public List<RegularMember> getRegularMemberList() {
@@ -38,6 +41,13 @@ public class RegularMemberService {
         }
 
         regularMemberList.add(regularMember);
+        memberService.addMember(regularMember);
+        regularMemberStorage.saveOneRegularMember(regularMember);
+    }
+
+    public void addRegularMemberFromFile(RegularMember regularMember) {
+        regularMemberList.add(regularMember);
+        memberService.addMember(regularMember);
     }
 
     public void deleteRegularMember(String id) {
@@ -46,6 +56,8 @@ public class RegularMemberService {
         for (int i = 0; i < regularMemberList.size(); i++) {
             if (regularMemberList.get(i).getId().equals(safeId)) {
                 regularMemberList.remove(i);
+                memberService.deleteMember(safeId);
+                regularMemberStorage.saveAllRegularMember(regularMemberList);
                 return;
             }
         }
@@ -72,6 +84,7 @@ public class RegularMemberService {
         String safeName = Validator.validateBasicString(newName);
 
         regularMember.setName(safeName);
+        regularMemberStorage.saveAllRegularMember(regularMemberList);
     }
 
     public void updatePhone(RegularMember regularMember, String newPhone) {
@@ -84,6 +97,7 @@ public class RegularMemberService {
         }
 
         regularMember.setPhone(newPhone);
+        regularMemberStorage.saveAllRegularMember(regularMemberList);
     }
 
     public void updateEmail(RegularMember regularMember, String newEmail) {
@@ -96,6 +110,7 @@ public class RegularMemberService {
         }
 
         regularMember.setEmail(safeEmail);
+        regularMemberStorage.saveAllRegularMember(regularMemberList);
     }
 
     public RegularMember findMemberById(String id) {

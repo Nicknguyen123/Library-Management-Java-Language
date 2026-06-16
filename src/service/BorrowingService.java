@@ -1,6 +1,10 @@
 package service;
 
 import model.*;
+import storage.BookStorage;
+import storage.BorrowingStorage;
+import storage.PremiumMemberStorage;
+import storage.RegularMemberStorage;
 import utils.Validator;
 
 import java.time.LocalDate;
@@ -11,11 +15,26 @@ public class BorrowingService {
     private List<Borrowing> borrowingList;
     private BookService bookService;
     private MemberService memberService;
+    private PremiumMemberService premiumMemberService;
+    private RegularMemberService regularMemberService;
+    private BorrowingStorage borrowingStorage;
+    private BookStorage bookStorage;
+    private PremiumMemberStorage premiumMemberStorage;
+    private RegularMemberStorage regularMemberStorage;
 
-    public BorrowingService(BookService bookService, MemberService memberService) {
+    public BorrowingService(BookService bookService, MemberService memberService,
+                            PremiumMemberService premiumMemberService, RegularMemberService regularMemberService,
+                            BorrowingStorage borrowingStorage, BookStorage bookStorage,
+                            PremiumMemberStorage premiumMemberStorage, RegularMemberStorage regularMemberStorage) {
         this.borrowingList = new ArrayList<>();
         this.bookService = bookService;
         this.memberService = memberService;
+        this.premiumMemberService = premiumMemberService;
+        this.regularMemberService = regularMemberService;
+        this.borrowingStorage = borrowingStorage;
+        this.bookStorage = bookStorage;
+        this.premiumMemberStorage = premiumMemberStorage;
+        this.regularMemberStorage = regularMemberStorage;
     }
 
     public List<Borrowing> getBorrowingList() {
@@ -65,9 +84,17 @@ public class BorrowingService {
         book.setTotalBorrowing(book.getTotalBorrowing() + 1);
         member.setCurrentBorrowedCount(member.getCurrentBorrowedCount() + 1);
         member.setTotalBorrowing(member.getTotalBorrowing() + 1);
+        borrowingStorage.saveOneBorrowing(borrowing);
+        bookStorage.saveAllBook(bookService.getBookList());
+
+        if (member instanceof PremiumMember) {
+            premiumMemberStorage.saveAllPremiumMember(premiumMemberService.getPremiumList());
+        } else {
+            regularMemberStorage.saveAllRegularMember(regularMemberService.getRegularMemberList());
+        }
     }
 
-    public void addBorrowingToList(Borrowing borrowing) {
+    public void addBorrowingFromFile(Borrowing borrowing) {
         borrowingList.add(borrowing);
     }
 
@@ -87,6 +114,15 @@ public class BorrowingService {
 
         Member member = borrowing.getMember();
         member.setCurrentBorrowedCount(member.getCurrentBorrowedCount() - 1);
+
+        borrowingStorage.saveAllBorrowing(borrowingList);
+        bookStorage.saveAllBook(bookService.getBookList());
+
+        if (member instanceof PremiumMember) {
+            premiumMemberStorage.saveAllPremiumMember(premiumMemberService.getPremiumList());
+        } else {
+            regularMemberStorage.saveAllRegularMember(regularMemberService.getRegularMemberList());
+        }
     }
 
     public void displayCurrentBorrowing() {

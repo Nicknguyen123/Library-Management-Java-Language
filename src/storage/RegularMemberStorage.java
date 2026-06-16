@@ -70,8 +70,7 @@ public class RegularMemberStorage {
 
             while ((dataLine = bufferedReader.readLine()) != null) {
                 RegularMember regularMember = convertStringToObject(dataLine);
-                regularMemberService.addRegularMember(regularMember);
-                memberService.addMember(regularMember);
+                regularMemberService.addRegularMemberFromFile(regularMember);
             }
 
         } catch (IOException e) {

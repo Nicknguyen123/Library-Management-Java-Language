@@ -81,7 +81,7 @@ public class BorrowingStorage {
             String dataLine;
             while ((dataLine = bufferedReader.readLine()) != null) {
                 Borrowing borrowing = convertStringToObject(dataLine);
-                borrowingService.addBorrowingToList(borrowing);
+                borrowingService.addBorrowingFromFile(borrowing);
             }
 
         } catch (IOException e) {

@@ -12,19 +12,13 @@ import utils.StringUtils;
 import java.util.List;
 
 public class PremiumMemberMenu {
-
-    private MemberService memberService;
     private PremiumMemberService premiumMemberService;
-    private PremiumMemberStorage premiumMemberStorage;
     private ConsoleHelper consoleHelper;
     private InputHelper inputHelper;
 
-    public PremiumMemberMenu(MemberService memberService, PremiumMemberService premiumMemberService,
-                             PremiumMemberStorage premiumMemberStorage, ConsoleHelper consoleHelper,
-                             InputHelper inputHelper) {
-        this.memberService = memberService;
+    public PremiumMemberMenu(PremiumMemberService premiumMemberService,
+                             ConsoleHelper consoleHelper, InputHelper inputHelper) {
         this.premiumMemberService = premiumMemberService;
-        this.premiumMemberStorage = premiumMemberStorage;
         this.consoleHelper = consoleHelper;
         this.inputHelper = inputHelper;
     }
@@ -90,8 +84,6 @@ public class PremiumMemberMenu {
 
                 PremiumMember premiumMember = new PremiumMember(id, name, phone, email);
                 premiumMemberService.addPremiumMember(premiumMember);
-                memberService.addMember(premiumMember);
-                premiumMemberStorage.saveOnePremiumMember(premiumMember);
 
                 System.out.println("\n✨ Successfully added Premium Member!");
 
@@ -145,8 +137,6 @@ public class PremiumMemberMenu {
 
             if (yesNo == 'Y') {
                 premiumMemberService.deletePremiumMember(id);
-                memberService.deleteMember(id);
-                premiumMemberStorage.saveAllPremiumMember(premiumMemberService.getPremiumList());
                 System.out.println("🗑️  Member deleted successfully!");
 
                 yesNo = inputHelper.readYesNo("🔄 Do you want to delete another member (Y/N): ");
@@ -301,7 +291,6 @@ public class PremiumMemberMenu {
 
             if (yesNo == 'Y') {
                 supportUpdate(premiumMember);
-                premiumMemberStorage.saveAllPremiumMember(premiumMemberService.getPremiumList());
                 System.out.printf("✨ All Changes For Premium Member Saved Successfully!\n");
 
                 yesNo = inputHelper.readYesNo("🔄 Do you want to update another member (Y/N): ");

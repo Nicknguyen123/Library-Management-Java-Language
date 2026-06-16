@@ -1,5 +1,5 @@
 BK482|Clean Code|Robert Martin|Technology|2008|10|0|1
 BK194|Introduction To Algorithms|Thomas H Cormen|Mathematics|2009|15|0|1
-BK730|Head First Java|Kathy Sierra|Technology|2022|12|0|1
+BK730|Head First Java|Kathy Sierra|Technology|2022|12|0|2
 BK859|The Pragmatic Programmer|Andrew Hunt|Education|2019|23|0|2
 BK361|Design Patterns|Erich Gamma|Technology|1994|30|0|1

@@ -6,7 +6,6 @@ import utils.InputHelper;
 import java.util.Scanner;
 
 public class ConsoleMenu {
-    private Scanner scanner;
     private ConsoleHelper consoleHelper;
     private InputHelper inputHelper;
     private PremiumMemberMenu premiumMemberMenu;
@@ -15,10 +14,9 @@ public class ConsoleMenu {
     private BorrowingMenu borrowingMenu;
     private ReportMenu reportMenu;
 
-    public ConsoleMenu(Scanner scanner, ConsoleHelper consoleHelper, InputHelper inputHelper, PremiumMemberMenu
+    public ConsoleMenu(ConsoleHelper consoleHelper, InputHelper inputHelper, PremiumMemberMenu
             premiumMemberMenu, RegularMemberMenu regularMemberMenu, BookMenu bookMenu,
                        BorrowingMenu borrowingMenu, ReportMenu reportMenu) {
-        this.scanner = scanner;
         this.consoleHelper = consoleHelper;
         this.inputHelper = inputHelper;
         this.premiumMemberMenu = premiumMemberMenu;

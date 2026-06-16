@@ -1,5 +1,6 @@
 package service;
 
+import storage.BookStorage;
 import utils.Validator;
 import model.Book;
 
@@ -8,9 +9,11 @@ import java.util.List;
 
 public class BookService {
     private List<Book> bookList;
+    private BookStorage bookStorage;
 
-    public BookService() {
+    public BookService(BookStorage bookStorage) {
         this.bookList = new ArrayList<>();
+        this.bookStorage = bookStorage;
     }
 
     public List<Book> getBookList() {
@@ -27,6 +30,11 @@ public class BookService {
         }
 
         bookList.add(book);
+        bookStorage.saveOneBook(book);
+    }
+
+    public void addBookFromFile(Book book) {
+        bookList.add(book);
     }
 
     public void deleteBook(String id) {
@@ -35,6 +43,7 @@ public class BookService {
         for (int i = 0; i < bookList.size(); i++) {
             if (bookList.get(i).getBookId().equals(safeId)) {
                 bookList.remove(i);
+                bookStorage.saveAllBook(bookList);
                 return;
             }
         }
@@ -61,6 +70,7 @@ public class BookService {
         String safeTitle = Validator.validateBasicString(newTitle);
 
         book.setTitle(safeTitle);
+        bookStorage.saveAllBook(bookList);
     }
 
     public void updateAuthor(Book book, String newAuthor) {
@@ -69,6 +79,7 @@ public class BookService {
         String safeAuthor = Validator.validateBasicString(newAuthor);
 
         book.setTitle(safeAuthor);
+        bookStorage.saveAllBook(bookList);
     }
 
     public void updateGenre(Book book, String newGenre) {
@@ -77,6 +88,7 @@ public class BookService {
         String safeGenre = Validator.validateBasicString(newGenre);
 
         book.setGenre(safeGenre);
+        bookStorage.saveAllBook(bookList);
     }
 
     public void updateYear(Book book, int newYear) {
@@ -85,6 +97,7 @@ public class BookService {
         int safeYear = Validator.validateNumber(newYear);
 
         book.setPublicationYear(safeYear);
+        bookStorage.saveAllBook(bookList);
     }
 
     public void updateQuantity(Book book, int newQuantity) {
@@ -96,7 +109,8 @@ public class BookService {
                     "currently borrowed books!");
         }
 
-            book.setQuantity(safeQuantity);
+        book.setQuantity(safeQuantity);
+        bookStorage.saveAllBook(bookList);
     }
 
     public Book findBookById(String id) {

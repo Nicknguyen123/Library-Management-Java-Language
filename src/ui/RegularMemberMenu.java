@@ -12,18 +12,13 @@ import java.util.List;
 import java.util.function.Consumer;
 
 public class RegularMemberMenu {
-    private MemberService memberService;
     private RegularMemberService regularMemberService;
-    private RegularMemberStorage regularMemberStorage;
     private ConsoleHelper consoleHelper;
     private InputHelper inputHelper;
 
-    public RegularMemberMenu(MemberService memberService, RegularMemberService regularMemberService,
-                             RegularMemberStorage regularMemberStorage, ConsoleHelper consoleHelper,
+    public RegularMemberMenu(RegularMemberService regularMemberService, ConsoleHelper consoleHelper,
                              InputHelper inputHelper) {
-        this.memberService = memberService;
         this.regularMemberService = regularMemberService;
-        this.regularMemberStorage = regularMemberStorage;
         this.consoleHelper = consoleHelper;
         this.inputHelper = inputHelper;
     }
@@ -89,8 +84,6 @@ public class RegularMemberMenu {
 
                 RegularMember regularMember = new RegularMember(id, name, phone, email);
                 regularMemberService.addRegularMember(regularMember);
-                memberService.addMember(regularMember);
-                regularMemberStorage.saveOneRegularMember(regularMember);
 
                 System.out.println("\n✨ Successfully added Regular Member!");
 
@@ -146,8 +139,6 @@ public class RegularMemberMenu {
 
             if (yesNo == 'Y') {
                 regularMemberService.deleteRegularMember(id);
-                memberService.deleteMember(id);
-                regularMemberStorage.saveAllRegularMember(regularMemberService.getRegularMemberList());
                 System.out.println("🗑️  Member deleted successfully!");
 
                 yesNo = inputHelper.readYesNo("🔄 Do you want to delete another member (Y/N): ");
@@ -302,7 +293,6 @@ public class RegularMemberMenu {
 
             if (yesNo == 'Y') {
                 supportUpdate(regularMember);
-                regularMemberStorage.saveAllRegularMember(regularMemberService.getRegularMemberList());
                 System.out.printf("✨ All Changes For Regular Member Saved Successfully!\n");
 
                 yesNo = inputHelper.readYesNo("🔄 Do you want to update another member (Y/N): ");

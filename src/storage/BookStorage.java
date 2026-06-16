@@ -69,7 +69,7 @@ public class BookStorage {
             String dataLine;
             while ((dataLine = bufferedReader.readLine()) != null) {
                Book book = convertStringToObject(dataLine);
-               bookService.addBook(book);
+               bookService.addBookFromFile(book);
             }
 
         } catch (IOException e) {

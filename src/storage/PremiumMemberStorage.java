@@ -70,8 +70,7 @@ public class PremiumMemberStorage {
             String dataLine;
             while ((dataLine = bufferedReader.readLine()) != null) {
                 PremiumMember premiumMember = convertStringOfObject(dataLine);
-                premiumMemberService.addPremiumMember(premiumMember);
-                memberService.addMember(premiumMember);
+                premiumMemberService.addPremiumMemberFromFile(premiumMember);
             }
 
         } catch (IOException e) {

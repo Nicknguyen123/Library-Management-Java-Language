@@ -17,26 +17,27 @@ public class Main {
         ConsoleHelper consoleHelper = new ConsoleHelper(scanner);
         InputHelper inputHelper = new InputHelper(scanner);
 
-        MemberService memberService = new MemberService();
-        PremiumMemberService premiumMemberService = new PremiumMemberService(memberService);
-        RegularMemberService regularMemberService = new RegularMemberService(memberService);
-        BookService bookService = new BookService();
-        BorrowingService borrowingService = new BorrowingService(bookService, memberService);
-        ReportService reportService = new ReportService(memberService, bookService, borrowingService);
-
         PremiumMemberStorage premiumMemberStorage = new PremiumMemberStorage();
         RegularMemberStorage regularMemberStorage = new RegularMemberStorage();
         BookStorage bookStorage = new BookStorage();
-        BorrowingStorage borrowingStorage = new BorrowingStorage(bookService, memberService);
 
-        PremiumMemberMenu premiumMemberMenu = new PremiumMemberMenu(memberService, premiumMemberService,
-                premiumMemberStorage, consoleHelper, inputHelper);
-        RegularMemberMenu regularMemberMenu = new RegularMemberMenu(memberService, regularMemberService,
-                regularMemberStorage, consoleHelper, inputHelper);
-        BookMenu bookMenu = new BookMenu(bookService, bookStorage,consoleHelper, inputHelper);
-        BorrowingMenu borrowingMenu = new BorrowingMenu(borrowingService, borrowingStorage, memberService,
-                premiumMemberService, regularMemberService, premiumMemberStorage, regularMemberStorage,
-                bookService, bookStorage, consoleHelper, inputHelper);
+        MemberService memberService = new MemberService();
+        PremiumMemberService premiumMemberService = new PremiumMemberService(memberService, premiumMemberStorage);
+        RegularMemberService regularMemberService = new RegularMemberService(memberService, regularMemberStorage);
+        BookService bookService = new BookService(bookStorage);
+
+        BorrowingStorage borrowingStorage = new BorrowingStorage(bookService, memberService);
+        BorrowingService borrowingService = new BorrowingService(bookService, memberService, premiumMemberService,
+                regularMemberService, borrowingStorage, bookStorage, premiumMemberStorage, regularMemberStorage);
+        ReportService reportService = new ReportService(memberService, bookService, borrowingService);
+
+        PremiumMemberMenu premiumMemberMenu = new PremiumMemberMenu(premiumMemberService, consoleHelper,
+                inputHelper);
+        RegularMemberMenu regularMemberMenu = new RegularMemberMenu(regularMemberService, consoleHelper,
+                inputHelper);
+        BookMenu bookMenu = new BookMenu(bookService, consoleHelper, inputHelper);
+        BorrowingMenu borrowingMenu = new BorrowingMenu(borrowingService, memberService, bookService,
+                consoleHelper, inputHelper);
         ReportMenu reportMenu = new ReportMenu(reportService, consoleHelper, inputHelper);
 
         premiumMemberStorage.loadData(premiumMemberService, memberService);
@@ -44,7 +45,7 @@ public class Main {
         bookStorage.loadData(bookService);
         borrowingStorage.loadData(borrowingService);
 
-        ConsoleMenu consoleMenu = new ConsoleMenu(scanner, consoleHelper, inputHelper, premiumMemberMenu,
+        ConsoleMenu consoleMenu = new ConsoleMenu(consoleHelper, inputHelper, premiumMemberMenu,
                 regularMemberMenu, bookMenu, borrowingMenu, reportMenu);
         consoleMenu.showMainMenu();
     }
