@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class MemberService {
-    private List<Member> memberList;
+    private final List<Member> memberList;
 
     public MemberService() {
         this.memberList = new ArrayList<>();

@@ -4,6 +4,7 @@ import javax.sound.sampled.Line;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
+import java.time.format.ResolverStyle;
 import java.util.Scanner;
 
 public class InputHelper {
@@ -223,7 +224,7 @@ public class InputHelper {
             String date = readStringNonBlank(message);
 
             try {
-                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy").withResolverStyle(ResolverStyle.STRICT);
                 return LocalDate.parse(date, formatter);
             } catch (DateTimeParseException e) {
                 System.out.println("❌ The date entered is invalid. Please use the format DD/MM/YYYY " +

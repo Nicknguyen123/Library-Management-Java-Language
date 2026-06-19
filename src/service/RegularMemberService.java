@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class RegularMemberService {
-    private List<RegularMember> regularMemberList;
+    private final List<RegularMember> regularMemberList;
     private MemberService memberService;
     private RegularMemberStorage regularMemberStorage;
 

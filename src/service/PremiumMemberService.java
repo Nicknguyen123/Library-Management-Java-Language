@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class PremiumMemberService {
-    private List<PremiumMember> premiumMemberList;
+    private final List<PremiumMember> premiumMemberList;
     private MemberService memberService;
     private PremiumMemberStorage premiumMemberStorage;
 

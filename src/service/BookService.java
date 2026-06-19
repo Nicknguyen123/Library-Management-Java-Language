@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class BookService {
-    private List<Book> bookList;
+    private final List<Book> bookList;
     private BookStorage bookStorage;
 
     public BookService(BookStorage bookStorage) {
@@ -117,7 +117,7 @@ public class BookService {
         String safeId = Validator.validateBasicString(id);
 
         for (Book book : bookList) {
-            if (book.getBookId().equals(id)) {
+            if (book.getBookId().equals(safeId)) {
                 return book;
             }
         }

@@ -12,7 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class BorrowingService {
-    private List<Borrowing> borrowingList;
+    private final List<Borrowing> borrowingList;
     private BookService bookService;
     private MemberService memberService;
     private PremiumMemberService premiumMemberService;
@@ -54,8 +54,8 @@ public class BorrowingService {
             throw new IllegalArgumentException("❌ Book not found in the system.");
         }
 
-        String status = book.getStatus();
-        if (status.charAt(2) == 'U') {
+        int status = book.getQuantity() - book.getBorrowCount();
+        if (status == 0) {
             throw new IllegalArgumentException("❌ This book is currently out of stock.");
         }
 
