@@ -93,7 +93,7 @@ public class RegularMemberService {
         String safePhone = Validator.validateBasicString(newPhone);
 
         if (memberService.checkDuplicatePhone(newPhone)) {
-            throw new IllegalArgumentException("❌ Phone number already registered: " + regularMember.getPhone());
+            throw new IllegalArgumentException("❌ Phone number already registered: " + safePhone);
         }
 
         regularMember.setPhone(newPhone);
@@ -106,7 +106,7 @@ public class RegularMemberService {
         String safeEmail = Validator.validateBasicEmail(newEmail);
 
         if (memberService.checkDuplicateEmail(newEmail)) {
-            throw new IllegalArgumentException("❌ Email already registered: " + regularMember.getEmail());
+            throw new IllegalArgumentException("❌ Email already registered: " + safeEmail);
         }
 
         regularMember.setEmail(safeEmail);

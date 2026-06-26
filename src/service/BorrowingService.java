@@ -171,7 +171,7 @@ public class BorrowingService {
         }
     }
 
-    public Borrowing findBorrowingById(String id) {
+    private Borrowing findBorrowingById(String id) {
         String safeId = Validator.validateBasicString(id);
 
         for (Borrowing borrowing : borrowingList) {
@@ -205,10 +205,12 @@ public class BorrowingService {
 
     private boolean checkDuplicateBorrowing(String bookId, String memberId) {
         for (Borrowing borrowing : borrowingList) {
-            Book book = borrowing.getBook();
-            Member member = borrowing.getMember();
-            if (book.getBookId().equals(bookId) && member.getId().equals(memberId)) {
-                return true;
+            if (borrowing.getReturnDate() == null) {
+                Book book = borrowing.getBook();
+                Member member = borrowing.getMember();
+                if (book.getBookId().equals(bookId) && member.getId().equals(memberId)) {
+                    return true;
+                }
             }
         }
 

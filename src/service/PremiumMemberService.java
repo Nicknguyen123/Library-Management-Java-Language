@@ -92,7 +92,7 @@ public class PremiumMemberService {
         String safePhone = Validator.validateBasicString(newPhone);
 
         if (memberService.checkDuplicatePhone(newPhone)) {
-            throw new IllegalArgumentException("❌ Phone number already registered: " + premiumMember.getPhone());
+            throw new IllegalArgumentException("❌ Phone number already registered: " + safePhone);
         }
 
         premiumMember.setPhone(newPhone);
@@ -105,7 +105,7 @@ public class PremiumMemberService {
         String safeEmail = Validator.validateBasicEmail(newEmail);
 
         if (memberService.checkDuplicateEmail(newEmail)) {
-            throw new IllegalArgumentException("❌ Email already registered: " + premiumMember.getEmail());
+            throw new IllegalArgumentException("❌ Email already registered: " + safeEmail);
         }
 
         premiumMember.setEmail(safeEmail);
